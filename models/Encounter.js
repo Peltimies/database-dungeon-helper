@@ -3,15 +3,22 @@ const mongoose = require('mongoose');
 
 // Skeeman luonti. Skeema määrittää kannassa olevan tiedon muodon
 const EncounterSchema = new mongoose.Schema({
-  entity: {
+  name: {
     type: String,
     require: true,
   },
-  roll: {
-    type: Number,
+  dice: {
+    type: String,
     require: true,
     min: 1,
     max: 6,
+  },
+
+  //Muistiinpano, tähän varmaan pitää tehä toinen skeema rollille
+  entities: {
+    entity: {
+      type: String,
+    },
   },
 });
 
