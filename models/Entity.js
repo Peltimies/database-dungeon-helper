@@ -1,30 +1,23 @@
-//Student-dokumentin skeema
 const mongoose = require('mongoose');
 
 // Skeeman luonti. Skeema määrittää kannassa olevan tiedon muodon
-const EncounterSchema = new mongoose.Schema({
-  name: {
+const EntitySchema = new mongoose.Schema({
+  entity: {
     type: String,
     require: true,
   },
-  dice: {
-    type: String,
+  roll: {
+    type: Number,
     require: true,
     min: 1,
     max: 6,
   },
-  entities: [
-    {
-      entity: String,
-      roll: Number,
-    },
-  ],
 });
 
 //Muistiinpano, tähän varmaan pitää tehä toinen skeema rollille
 
 // Tehdään skeemasta model, jonka metodeilla kantaoperaatioita suoritetaan
-// Model on luokka joka sisältää skeeman
-const Encounter = mongoose.model('Table', EncounterSchema);
+// Model on luokka joka sisää skeeman
+const Entity = mongoose.model('Entity', EntitySchema);
 // exportataan model
-module.exports = Encounter;
+module.exports = Entity;
