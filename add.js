@@ -24,7 +24,32 @@ const encounters = [
       { entity: 'Ghouls', roll: 2 },
       { entity: 'Danji-kai', roll: 3 },
       { entity: 'Anturai', roll: 4 },
-      { entity: 'Rival adventuring party', roll: 6 },
+      { entity: 'Rival adventuring party', roll: 5 },
+      { entity: 'Magical Beast', roll: 6 },
+    ],
+  },
+  {
+    name: 'Settlement Encounters',
+    dice: '1d6',
+    entities: [
+      { entity: 'Criminals', roll: 1 },
+      { entity: 'Guard Patrol', roll: 2 },
+      { entity: 'Merchant', roll: 3 },
+      { entity: 'Nobles', roll: 4 },
+      { entity: 'Foreigners', roll: 5 },
+      { entity: 'Commoners', roll: 6 },
+    ],
+  },
+  {
+    name: 'Highway Encounters',
+    dice: '1d6',
+    entities: [
+      { entity: 'Highwaymen', roll: 1 },
+      { entity: 'Anturai', roll: 2 },
+      { entity: 'Wild animals', roll: 3 },
+      { entity: 'Legionares', roll: 4 },
+      { entity: 'Hunters', roll: 5 },
+      { entity: 'Commoners', roll: 6 },
     ],
   },
 ];
