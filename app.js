@@ -1,60 +1,64 @@
-require('dotenv').config();
-const path = require('path');
+/*
+app.js on express-sovelluksen päätiedosto josta sovellus lähtee käyntiin
+*/
 const express = require('express');
-const passport = require('passport');
-const { Strategy } = require('passport-google-oauth20');
-// haaetaan salaisten muuttujien arvot env-tiedostosta
-const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, SESSION_SECRET } = process.env;
-// serverin portti haetaan env-tiedostosta tai se on 3000
-const port = process.env.PORT || 3000;
+const path = require('path');
+// const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+
+require('./dbconnection');
+
+const index = require('./routes/index');
+const encounters = require('./routes/encounters');
+const users = require('./routes/users');
+
 const app = express();
-const routes = require('./routes');
 
-/**************Passport-käyttöönotto*******************************************/
-
-// Passportin käyttöönotto on sovelluksen päätiedostossa app.js.
-// Se voitaisiin myös laittaa omaan tiedostoonsa
-passport.use(
-  new Strategy(
-    {
-      clientID: GOOGLE_CLIENT_ID,
-      clientSecret: GOOGLE_CLIENT_SECRET,
-      callbackURL: 'http://localhost:3000/auth/google/callback',
-    },
-    (accessToken, refreshToken, profile, cb) => {
-      return cb(null, profile);
-    }
-  )
-);
-
-// passportin login-session vaatii käyttäjän serialisointa (olio merkkijonoksi)
-// passportissa on tähän omat metodit
-// serialisointi
-passport.serializeUser((user, cb) => {
-  cb(null, user);
-});
-// ja deserialisointi
-passport.deserializeUser((obj, cb) => {
-  cb(null, obj);
-});
-
-/******************************************************************************/
-
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+const corsOptions = {
+  origin: 'http://localhost:4200',
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
 
-app.use('/public', express.static(path.join(__dirname, 'public')));
-// tavallinen sessio
+/**************Miidlewaren käyttöönottoa *****************/
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger('dev'));
+app.use(bodyParser.json());
 app.use(
-  require('express-session')({
-    secret: SESSION_SECRET,
-    resave: true,
-    saveUninitialized: true,
+  bodyParser.urlencoded({
+    extended: false,
   })
 );
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(passport.initialize());
-app.use(passport.session()); // passport-sessio
+app.use('/', index); // index-reitti
+app.use('/encounters', encounters); // users-reitti
+app.use('/users', users); // users-reitti
 
-app.use('/', routes);
+// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+  const err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
 
-app.listen(port);
+// error handler
+app.use(function (err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
+module.exports = app;
