@@ -6,16 +6,16 @@ jolla suoritetaan autentikaatio.
 */
 
 const bcrypt = require('bcryptjs');
-const Admin = require('../models/Admin.js');
+const User = require('../models/User.js');
 const createToken = require('../createtoken.js');
 
-const AdminController = {
+const UserController = {
   // uuden käyttäjän rekisteröinti
-  async registerAdmin(req, res, next) {
+  async registerUser(req, res, next) {
     // passu kryptataan ennen kantaan laittamista
     const hashedPassword = bcrypt.hashSync(req.body.password, 8);
 
-    const admin = await Admin.create({
+    const user = await User.create({
       username: req.body.username,
       password: hashedPassword,
       isadmin: req.body.isadmin,
@@ -24,7 +24,7 @@ const AdminController = {
         .status(500)
         .send('Käyttäjän rekisteröinti epäonnistui.' + error);
     });
-    const token = createToken(admin); // tokenin luontimetodi
+    const token = createToken(user); // tokenin luontimetodi
     // palautetaan token JSON-muodossa
     res.json({
       success: true,
@@ -35,32 +35,31 @@ const AdminController = {
 
   // olemassa olevan käyttäjän autentikaatio
   // jos autentikaatio onnistuu, käyttäjälle luodaan token
-  async authenticateAdmin(req, res, next) {
+  async authenticateUser(req, res, next) {
     // etsitään käyttäjä kannasta http-pyynnöstä saadun käyttäjätunnuksen perusteella
-    const admin = await Admin.findOne({
+    const user = await User.findOne({
       username: req.body.username,
     }).catch((error) => {
       throw error;
     });
-    if (!admin) {
-      //jos käyttääjää ei ole kannassa, autentikaatio epäonnistui.
+    if (!user) { //jos käyttääjää ei ole kannassa, autentikaatio epäonnistui.
       res.json({
         success: false,
         message: 'Autentikaatio epäonnistui. Syy 1',
       });
-    } else if (admin) {
+    } else if (user) {
       // console.log(req.body.password); // lomakkelle syötetty salasana
       // console.log(user.password); // kannassa oleva salasana
       // verrataan lomakkeelle syötettyä salasanaa kannassa olevaan salasanaan
       // jos vertailtavat eivät ole samat, palautetaan tieto siitä että autentikaatio epäonnistui
-      if (bcrypt.compareSync(req.body.password, admin.password) === false) {
+      if (bcrypt.compareSync(req.body.password, user.password) === false) {
         res.json({
           success: false,
           message: 'Autentikaatio epäonnistui. Syy 2',
         });
       } else {
         // jos salasanat ovat samat, luodaan token
-        const token = createToken(admin); // tokenin luontimetodi
+        const token = createToken(user); // tokenin luontimetodi
         // palautetaan token JSON-muodossa
         res.json({
           success: true,
@@ -72,4 +71,4 @@ const AdminController = {
   },
 };
 
-module.exports = AdminController;
+module.exports = UserController;

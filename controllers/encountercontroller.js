@@ -27,10 +27,10 @@ const EncounterController = {
     //Mongoose-kantaoperaatio tänne
     //findOne-metodin argumenttina on olio, jossa on hakuehto
     //kannassa olevan id:n (_id) on vastattava pyynnön mukana tulevaan id
-    Kartta.findOne({ _id: req.params.id })
+    Encounter.findOne({ _id: req.params.id })
       // palautuva promise sisältää yhden opiskelijan
-      .then((karttas) => {
-        res.json(karttas);
+      .then((encounters) => {
+        res.json(encounters);
       })
       .catch((error) => {
         throw error;
