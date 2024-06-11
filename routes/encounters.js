@@ -6,7 +6,7 @@ const sc = require('../controllers/encountercontroller');
 const authorize = require('../verifytoken');
 
 //http://localhost:3000/students/
-router.get('/', authorize, sc.findAll);
+router.get('/', sc.findAll);
 
 //http://localhost:3000/students/
 // : id:n edessä tarkoittaa että id on dynaaminen eli vaihtuva, ei aina sama.
