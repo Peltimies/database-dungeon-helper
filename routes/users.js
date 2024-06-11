@@ -9,5 +9,7 @@ const userCon = require('../controllers/usercontroller');
 router.post('/register', userCon.registerUser);
 // kirjautuminen eli autentikaatio tunnareilla
 router.post('/login', userCon.authenticateUser);
+// Kirjautuminen Googlen tunnareilla Angular-lomakkeelta
+router.post('/glogin', userCon.authenticateGUser);
 
 module.exports = router;

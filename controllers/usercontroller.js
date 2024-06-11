@@ -1,16 +1,12 @@
-/* UserController on Userin tietokantaoperaatiot
-ja autentikaation sisältävä kontrolleri.
-Se sisältää kaksi metodia: registerUser jolla
-luodaan uusi käyttäjä kantaan ja authenticateUser
-jolla suoritetaan autentikaatio.
-*/
+// UserController on Userin tietokantaoperaatiot sisältävä kontrolleri
 
 const bcrypt = require('bcryptjs');
 const User = require('../models/User.js');
 const createToken = require('../createtoken.js');
+const validateSocialToken = require('../validatesocialtoken.js');
 
 const UserController = {
-  // uuden käyttäjän rekisteröinti
+  // uuden käyttäjän rekisteröinti ja tallennus mongo-kantaan
   async registerUser(req, res, next) {
     // passu kryptataan ennen kantaan laittamista
     const hashedPassword = bcrypt.hashSync(req.body.password, 8);
@@ -33,8 +29,7 @@ const UserController = {
     });
   },
 
-  // olemassa olevan käyttäjän autentikaatio
-  // jos autentikaatio onnistuu, käyttäjälle luodaan token
+  // Metodi jolla kirjaudutaan sisään olemassa olevalla omalla käyttäjällä
   async authenticateUser(req, res, next) {
     // etsitään käyttäjä kannasta http-pyynnöstä saadun käyttäjätunnuksen perusteella
     const user = await User.findOne({
@@ -42,7 +37,8 @@ const UserController = {
     }).catch((error) => {
       throw error;
     });
-    if (!user) { //jos käyttääjää ei ole kannassa, autentikaatio epäonnistui.
+    if (!user) {
+      //jos käyttääjää ei ole kannassa, autentikaatio epäonnistui.
       res.json({
         success: false,
         message: 'Autentikaatio epäonnistui. Syy 1',
@@ -68,6 +64,32 @@ const UserController = {
         });
       }
     }
+  },
+
+  /* Metodi jolla kirjaudutaan olemassa olevalla Googlen käyttäjällä
+       Käyttäjän idtoken saadaan frontendistä ja se validoidaan Googlen palvelussa.
+       Onnistuneen validaation tuloksena saadaan käyttäjädataa, eli userid, joka
+       sijoitetaan JWT-tokeniin joka lähetetään frontendiin. Frontendissä JWT:tä
+       voidaan käyttää esim. sovelluksessa liikkumiseen ja REST-apin reittien authorisaatioon.
+    */
+  authenticateGUser: function (req, res, next) {
+    // Googlelta frontendissä saatu token
+    const token = req.body.gtoken;
+    console.log(token);
+
+    // validateSocialToken palauttaa promisen, joka tässä käsitellään then-metodilla
+    validateSocialToken(token).then(function (userid) {
+      console.log(userid);
+      // userid eli käyttäjän yksilöllinen Google-tunnus laitetaan JWT-tokeniin
+      const user = { username: userid, isadmin: true };
+      const jwttoken = createToken(user); // tokenin luontimetodi
+      console.log('Valmis JWT: ' + jwttoken);
+      res.json({
+        success: true,
+        message: 'Tässä on valmis JWT-token!',
+        token: jwttoken,
+      });
+    });
   },
 };
 
