@@ -16,7 +16,9 @@ require('./dbconnection');
 
 const index = require('./routes/index');
 const encounters = require('./routes/encounters');
+const reactions = require('./routes/reactions');
 const users = require('./routes/users');
+const realms = require('./routes/realms');
 
 const app = express();
 
@@ -51,6 +53,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index); // index-reitti
 app.use('/encounters', encounters); // users-reitti
 app.use('/users', users); // users-reitti
+app.use('/reactions', reactions);
+app.use('/realms', realms);
 app.use(express.json());
 app.use(
   session({
@@ -82,6 +86,8 @@ app.post('/submit', (req, res) => {
 app.use('/', index); // index-reitti
 app.use('/users', users); // users-reitti
 app.use('/encounters', encounters);
+app.use('/reactions', reactions);
+app.use('/realms', realms);
 
 // catch 404 and forward to error handler
 //app.use(function (req, res, next) {

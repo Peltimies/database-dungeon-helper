@@ -11,8 +11,7 @@ const Encounter = require('../models/Encounter');
 // Tietokannan käsittelymetodit tehdään olion sisään
 // metodin nimi on avain ja sen runko on arvo
 const EncounterController = {
-  /* findAll -metodi hakee kaikki opiskelijat
-  Student-modelin find-metodilla */
+  // 1) Kaikki encounterit
   findAll(req, res) {
     Encounter.find()
       .then((encounters) => {
@@ -22,7 +21,7 @@ const EncounterController = {
         throw error;
       });
   },
-  // haetaan 1 opiskelija id:n perusteella
+  // 2) Yhden encounterin haku id:n perusteella
   findById(req, res) {
     //Mongoose-kantaoperaatio tänne
     //findOne-metodin argumenttina on olio, jossa on hakuehto
@@ -36,6 +35,7 @@ const EncounterController = {
         throw error;
       });
   },
+  // 3) Poistaa encounterin id:n perusteella
   deleteById(req, res) {
     //Mongoose-kantaoperaatio tänne
     //findOneAndDelete-metodin argumenttina on olio, jossa on hakuehto
@@ -43,44 +43,40 @@ const EncounterController = {
     Encounter.findOneAndDelete({ _id: req.params.id })
       // palautuva promise sisältää poistettavan opiskelijan
       .then((encounters) => {
+        console.log(`Encounter ${req.params.id} deleted`);
         res.json(encounters);
       })
       .catch((error) => {
         throw error;
       });
   },
-  //findByScode
-  // jos haetaan opiskelijanumerolla, on hakuehto:
-  // {studentcode: req.params.studentcode}
-
-  //opiskelijan lisääminen async-awaitilla.
-  async add(req, res) {
-    //Mongoose-kantaoperaatio tänne
-    //lisättävä opiskelija tulee asiakassovelluksesta
-    // pyynnön eli requestin bodyssa, sen tyyppi muutetaan
-    // heti Student-tyypiksi.
+  // 4) Lisaä uusi encounter
+  create(req, res) {
+    console.log('Creating new encounter roll table');
+    console.log('Request body: ', req.body);
     const newEncounter = Encounter(req.body);
-    const encounter = await Encounter.create(newEncounter).catch((error) => {
-      throw error;
-    });
-    console.log('Map added to db' + encounter);
-    //fronttisovellus voi välittömästi käyttää
-    // lisättyä opiskelijaa, kun se palautetaan jsonina
-    res.json(encounter);
-  }, //jne...
+    Encounter.create(newEncounter)
+      .then((encountner) => {
+        console.log('Encounter created');
+        res.json(encountner);
+      })
+      .catch((error) => {
+        throw error;
+      });
+  },
 
-  async update(req, res) {
-    //päivitysmetodin argumenteiksi tulevat asiakkaalta
-    // saatu id, joka määrittää mikä opiskelija päivitetään;
-    // ja body, jossa on uusi data, joka laitetaan entisen päälle
-    // put-metodilla
-    const encounter = await Encounter.findByIdAndUpdate(
-      req.params.id,
-      req.body
-    ).catch((error) => {
-      throw error;
-    });
-    res.json(encounter);
+  // 5) Paivitetaan encounterin id:n perusteella
+  updateById(req, res) {
+    Encounter.findOneAndUpdate({ _id: req.params.id }, req.body, {
+      new: true,
+    })
+      .then((encounters) => {
+        console.log(`Encounter ${req.params.id} updated`);
+        res.json(encounters);
+      })
+      .catch((error) => {
+        throw error;
+      });
   },
 };
 

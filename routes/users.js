@@ -13,3 +13,4 @@ router.post('/login', userCon.authenticateUser);
 router.post('/glogin', userCon.authenticateGUser);
 
 module.exports = router;
+//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImR1bmdlb25tYXN0ZXIiLCJpc2FkbWluIjp0cnVlLCJpYXQiOjE3MTgwOTA0ODksImV4cCI6MTcxODE3Njg4OX0.J4OKCtDULLoWjpx_phDgtwoI5JGUTUULYm-xFwGD2pc
