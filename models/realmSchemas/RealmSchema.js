@@ -1,13 +1,9 @@
 const mongoose = require('mongoose');
-const RegionSchema = require('./RegionSchema');
+const Schema = mongoose.Schema;
 
 const RealmSchema = new mongoose.Schema({
-  regions: {
-    type: Map,
-    of: RegionSchema,
-  },
+  name: String,
+  regions: [{ type: Schema.Types.ObjectId, ref: 'Region' }],
 });
 
-const Realm = mongoose.model('Realm', RealmSchema);
-
-module.exports = Realm;
+module.exports = mongoose.model('Realm', RealmSchema);

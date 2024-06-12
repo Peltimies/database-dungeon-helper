@@ -1,14 +1,15 @@
 const mongoose = require('mongoose');
 
 const CitySchema = new mongoose.Schema({
-  type: { type: String, required: true },
-  name: { type: String, required: true },
+  type: String,
+  name: String,
   landmarks: [String],
-  population: { type: String, required: true },
-  founding: { type: String, required: true },
+  population: String,
+  founding: String,
+  settlements: [String],
   cultures: [String],
   resource: String,
   description: String,
 });
 
-module.exports = CitySchema;
+module.exports = mongoose.model('City', CitySchema);

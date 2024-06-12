@@ -1,14 +1,12 @@
 const mongoose = require('mongoose');
-const CitySchema = require('./CitySchema');
-const FortSchema = require('./FortSchema');
-const TownSchema = require('./TownSchema');
-const VillageSchema = require('./VillageSchema');
+const Schema = mongoose.Schema;
 
 const RegionSchema = new mongoose.Schema({
-  cities: [CitySchema],
-  forts: [FortSchema],
-  towns: [TownSchema],
-  villages: [VillageSchema],
+  name: String,
+  cities: [{ type: Schema.Types.ObjectId, ref: 'City' }],
+  forts: [{ type: Schema.Types.ObjectId, ref: 'Fort' }],
+  towns: [{ type: Schema.Types.ObjectId, ref: 'Town' }],
+  villages: [{ type: Schema.Types.ObjectId, ref: 'Village' }],
 });
 
-module.exports = RegionSchema;
+module.exports = mongoose.model('Region', RegionSchema);
