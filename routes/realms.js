@@ -1,12 +1,13 @@
 /* eslint-disable new-cap */
 const express = require('express');
 const router = express.Router();
-const realmsCon = require('../controllers/realmcontroller');
+const realmCon = require('../controllers/realmcontroller');
 
-router.get('/', realmsCon.findAll);
+router.get('/', realmCon.findAll);
 
-router.get('/:id', realmsCon.findByName);
+// http://localhost:3000/realms/:id
+router.get('/realms/:rname', realmCon.findByName);
 
-router.delete('/:id', realmsCon.deleteById);
+router.delete('/:id', realmCon.deleteById);
 
 module.exports = router;

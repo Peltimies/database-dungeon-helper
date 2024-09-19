@@ -13,8 +13,10 @@ const RealmController = {
   },
 
   findByName(req, res) {
-    Realm.find({ _id: req.params.id })
-      .then((realm) => res.json(realm))
+    Realm.findOne({ realms: req.params.rname })
+      .then((realm) => {
+        res.json(realm);
+      })
       .catch((error) => {
         throw error;
       });

@@ -5,9 +5,9 @@ const authorize = require('../verifytoken');
 const reactionCon = require('../controllers/reactioncontroller');
 
 // http://localhost:3000/reactions
-router.get('/', reactionCon.findAll);
+router.get('/', authorize, reactionCon.findAll);
 // http://localhost:3000/reactions/:id
-router.get('/reactions/:id', reactionCon.findById);
+router.get('/reactions/:id', authorize, reactionCon.findById);
 // http://localhost:3000/reactions/create
 router.post('/create', authorize, reactionCon.create);
 // http://localhost:3000/reactions/:id
