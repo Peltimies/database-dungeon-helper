@@ -3,20 +3,14 @@ const mongoose = require('mongoose');
 
 // Skeeman luonti. Skeema määrittää kannassa olevan tiedon muodon
 const EncounterSchema = new mongoose.Schema({
-  name: {
+  biome: {
     type: String,
     require: true,
   },
-  dice: {
-    type: String,
-    require: true,
-    min: 1,
-    max: 6,
-  },
-  entities: [
+  enc: [
     {
-      entity: String,
-      roll: Number,
+      name: String,
+      descrption: String,
     },
   ],
 });

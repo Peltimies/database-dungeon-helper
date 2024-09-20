@@ -5,51 +5,40 @@ const Encounter = require('./models/Encounter'); // model
 // Define your DnD encounters for wilderness encountersconst encounters = [
 const encounters = [
   {
-    name: 'Wilderness Encounters',
-    dice: '1d6',
-    entities: [
-      { entity: 'Bandits', roll: 1 },
-      { entity: 'Anturai', roll: 2 },
-      { entity: 'Wild animals', roll: 3 },
-      { entity: 'Rangers', roll: 4 },
-      { entity: 'Hunters', roll: 5 },
-      { entity: 'Cultists', roll: 6 },
+    biome: 'Highway',
+    enc: [
+      {
+        name: 'Highwaymen',
+        description:
+          'A group of bandits, armed to the teeth, are lying in wait to harass unsuspecting travelers.',
+      },
     ],
   },
   {
-    name: 'Dungeon Encounters',
-    dice: '1d6',
-    entities: [
-      { entity: 'Chuds', roll: 1 },
-      { entity: 'Ghouls', roll: 2 },
-      { entity: 'Danji-kai', roll: 3 },
-      { entity: 'Anturai', roll: 4 },
-      { entity: 'Rival adventuring party', roll: 5 },
-      { entity: 'Magical Beast', roll: 6 },
+    biome: 'Dungeon',
+    enc: [
+      {
+        name: 'Dungeonstalker',
+        description: 'Dungeonman!!.',
+      },
     ],
   },
   {
-    name: 'Settlement Encounters',
-    dice: '1d6',
-    entities: [
-      { entity: 'Criminals', roll: 1 },
-      { entity: 'Guard Patrol', roll: 2 },
-      { entity: 'Merchant', roll: 3 },
-      { entity: 'Nobles', roll: 4 },
-      { entity: 'Foreigners', roll: 5 },
-      { entity: 'Commoners', roll: 6 },
+    biome: 'Settlement',
+    enc: [
+      {
+        name: 'City man',
+        description: 'City man!!.',
+      },
     ],
   },
   {
-    name: 'Highway Encounters',
-    dice: '1d6',
-    entities: [
-      { entity: 'Highwaymen', roll: 1 },
-      { entity: 'Anturai', roll: 2 },
-      { entity: 'Wild animals', roll: 3 },
-      { entity: 'Legionares', roll: 4 },
-      { entity: 'Hunters', roll: 5 },
-      { entity: 'Commoners', roll: 6 },
+    biome: 'Wilderness',
+    enc: [
+      {
+        name: 'Hunter',
+        description: 'Hunterman.',
+      },
     ],
   },
 ];

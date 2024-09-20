@@ -1,16 +1,14 @@
 const mongoose = require('mongoose');
 
 // Skeeman luonti. Skeema määrittää kannassa olevan tiedon muodon
-const EntitySchema = new mongoose.Schema({
-  entity: {
+const EncSchema = new mongoose.Schema({
+  name: {
     type: String,
     require: true,
   },
-  roll: {
-    type: Number,
+  description: {
+    type: String,
     require: true,
-    min: 1,
-    max: 6,
   },
 });
 
@@ -18,6 +16,6 @@ const EntitySchema = new mongoose.Schema({
 
 // Tehdään skeemasta model, jonka metodeilla kantaoperaatioita suoritetaan
 // Model on luokka joka sisää skeeman
-const Entity = mongoose.model('Entity', EntitySchema);
+const Enc = mongoose.model('Enc', EncSchema);
 // exportataan model
-module.exports = Entity;
+module.exports = Enc;
