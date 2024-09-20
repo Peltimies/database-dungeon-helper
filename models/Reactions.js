@@ -2,23 +2,33 @@
 const mongoose = require('mongoose');
 
 // Skeeman luonti. Skeema määrittää kannassa olevan tiedon muodon
-const EncounterSchema = new mongoose.Schema({
-  biome: {
+const ReactionSchema = new mongoose.Schema({
+  reaction1: {
     type: String,
     require: true,
   },
-  enc: [
-    {
-      name: String,
-      descrption: String,
-    },
-  ],
+  reaction2: {
+    type: String,
+    require: true,
+  },
+  reaction3: {
+    type: String,
+    require: true,
+  },
+  reaction4: {
+    type: String,
+    require: true,
+  },
+  reaction5: {
+    type: String,
+    require: true,
+  },
 });
 
 //Muistiinpano, tähän varmaan pitää tehä toinen skeema rollille
 
 // Tehdään skeemasta model, jonka metodeilla kantaoperaatioita suoritetaan
 // Model on luokka joka sisältää skeeman
-const Encounter = mongoose.model('Table', EncounterSchema);
+const Reaction = mongoose.model('Reaction', ReactionSchema);
 // exportataan model
-module.exports = Encounter;
+module.exports = Reaction;

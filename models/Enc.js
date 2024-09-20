@@ -1,24 +1,21 @@
-//Student-dokumentin skeema
 const mongoose = require('mongoose');
 
 // Skeeman luonti. Skeema määrittää kannassa olevan tiedon muodon
-const EncounterSchema = new mongoose.Schema({
-  biome: {
+const EncSchema = new mongoose.Schema({
+  name: {
     type: String,
     require: true,
   },
-  enc: [
-    {
-      name: String,
-      descrption: String,
-    },
-  ],
+  description: {
+    type: String,
+    require: true,
+  },
 });
 
 //Muistiinpano, tähän varmaan pitää tehä toinen skeema rollille
 
 // Tehdään skeemasta model, jonka metodeilla kantaoperaatioita suoritetaan
-// Model on luokka joka sisältää skeeman
-const Encounter = mongoose.model('Table', EncounterSchema);
+// Model on luokka joka sisää skeeman
+const Enc = mongoose.model('Enc', EncSchema);
 // exportataan model
-module.exports = Encounter;
+module.exports = Enc;
